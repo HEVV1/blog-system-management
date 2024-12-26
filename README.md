@@ -21,4 +21,4 @@ client UI uses 5175 PORT if it's already taken u can check it in on your system 
 
 For email testing I used Mailtrap specifically, but u can choose freely any other mailer for testing and put those smtp credentials in .env config file
 
-All necessary configuration written in .txt file except mailer sender or in .env.example file
+All necessary configuration except only mailer sender written in .txt file or in .env.example file
