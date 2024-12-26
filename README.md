@@ -1,14 +1,19 @@
 php version used - 8.2.25
 composer version - 2.8.2
 node.js - 23.5.0
+
 There is some steps to run this project locally
+
 for the api project:
+
 1) composer install
 2) composer run dev
 3) docker composer up
 4) php artisan migrate
 5) php artisan db:seed (or alternatively php artisan migrate:refresh --seed)
+
 for the client
+
 1) npm install
 2) npm run dev
 
