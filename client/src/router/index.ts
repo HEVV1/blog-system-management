@@ -13,6 +13,10 @@ import ViewSendResetLink from '@/views/auth/ViewSendResetLink.vue'
 import ViewResetLinkSendMessage from '@/views/auth/ViewResetLinkSendMessage.vue'
 import ViewPasswordReset from '@/views/auth/ViewPasswordReset.vue'
 import ViewPasswordResetSuccessMsg from '@/views/auth/ViewPasswordResetSuccessMsg.vue'
+import ViewBlog from '@/views/blog/ViewBlog.vue'
+import ViewBlogCreate from '@/views/blog/ViewBlogCreate.vue'
+import ViewBlogDelete from '@/views/blog/ViewBlogDelete.vue'
+import ViewBlogEdit from '@/views/blog/ViewBlogEdit.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -74,7 +78,29 @@ const router = createRouter({
     {
       path: '/blogs',
       name: 'Blogs',
-      component: ViewBlogs,
+      component: ViewBlogs
+    },
+    {
+      path: '/blogs/:id',
+      name: 'Blog',
+      component: ViewBlog,
+    },
+    {
+      path: '/blog/create',
+      name: 'Create blog',
+      component: ViewBlogCreate,
+      meta: { requiresAuth: true }
+    },
+    {
+      path: '/blog/edit/:id',
+      name: 'View Blog',
+      component: ViewBlogEdit,
+      meta: { requiresAuth: true }
+    },
+    {
+      path: '/blog/delete/:id',
+      name: 'Delete blog',
+      component: ViewBlogDelete,
       meta: { requiresAuth: true }
     },
     // Not Found

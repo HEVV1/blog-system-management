@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\BlogController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\PasswordResetController;
@@ -11,10 +12,17 @@ Route::post('/register', [AuthController::class, 'register'])
 Route::post('/login', [AuthController::class, 'login'])
     ->name('login');
 
+// Blogs
+Route::apiResource('blogs', BlogController::class)
+    ->only(['index', 'show']);
+
 //Protected routes
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/logout', [AuthController::class, 'logout'])
         ->name('logout');
+
+    Route::apiResource('blogs', BlogController::class)
+        ->only(['store', 'update', 'destroy']);
 });
 
 // Password reset
