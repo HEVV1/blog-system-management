@@ -17,7 +17,7 @@ for the client
 1) npm install
 2) npm run dev
 
-client UI uses 5175 PORT if it's already taken u can check it in on your system by running command in CMD: netstat -na | find "5175" and kill it by this command: taskkill /f /pid YOUR_PID_NUMBER
+client UI uses 5175 PORT if it's already taken u can check it in on your system by running command in CMD: netstat -na | find "5175" and terminate it by this command: taskkill /f /pid YOUR_PID_NUMBER
 
 For email testing I used Mailtrap specifically, but u can choose freely any other mailer for testing and put those smtp credentials in .env config file
 
