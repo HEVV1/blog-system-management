@@ -18,6 +18,14 @@
       <span class="text-sm text-slate-500">
         Status: {{ props.blog?.status }}
       </span>
+      <br>
+      <span class="text-sm text-slate-500">
+        Country: {{ props.blog?.user?.country }}
+      </span>
+      <br>
+      <span class="text-sm text-slate-500">
+        Language: {{ props.blog?.user?.language }}
+      </span>
     </div>
   </article>
 </template>

@@ -21,9 +21,10 @@
       class="w-full mb-8"
       title="Create"
       @click="redirectTo('/blog/create')" />
-    <div v-for="(item) in blogs">
+    <div v-for="item in blogs">
       <router-link :to="{name: 'Blog', params: {id: item.id}}">
         <CompSingleBlog
+          :key="item.id"
           :blog="item">
         </CompSingleBlog>
       </router-link>

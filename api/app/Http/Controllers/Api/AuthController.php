@@ -22,11 +22,11 @@ class AuthController extends Controller
             'username' => $validate['username'],
             'email' => $validate['email'],
             'password' => Hash::make($validate['password']),
+            'country' => $validate['country'],
+            'language' => $validate['language'],
         ]);
 
         $user->sendEmailVerificationNotification();
-
-//        $token = $user->createToken('auth_token')->plainTextToken;
 
         return response()->json([
             'message' => 'Account has been created',
@@ -76,5 +76,12 @@ class AuthController extends Controller
         return response()->json([
             'message' => 'Logged out successfully'
         ], 200);
+    }
+
+    public function countriesLanguageJson()
+    {
+        return response()->json(
+            json_decode(file_get_contents(public_path('data/country-by-languages.json')))
+        );
     }
 }

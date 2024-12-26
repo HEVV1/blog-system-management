@@ -39,6 +39,40 @@
         :label="'Confirm Password'"
         v-model="formData.password_confirmation"
       />
+      <div class="mt-4">
+        <label class="mb-1 block text-md font-medium text-slate-900" for="country">Country:</label>
+        <select
+          class="w-full rounded-md border-0 py-1.5 px-2.5 text-sm ring-1 ring-slate-300 placeholder:text-slate-400 focus:ring-2"
+          id="country"
+          v-model="selectedCountry"
+          @change="onCountryChange"
+        >
+          <option value="">Select Country</option>
+          <option
+            v-for="item in jsonCountryData"
+            :key="item.country"
+            :value="item.country"
+          >
+            {{ item.country }}
+          </option>
+        </select>
+      </div>
+      <div class="mt-4">
+        <label class="mb-1 block text-md font-medium text-slate-900" for="language">Language:</label>
+        <select
+          class="w-full rounded-md border-0 py-1.5 px-2.5 text-sm ring-1 ring-slate-300 placeholder:text-slate-400 focus:ring-2"
+          id="language"
+          v-model="selectedLanguage">
+          <option value="">Select Language</option>
+          <option
+            v-for="(lang, index) in availableLanguages"
+            :key="index"
+            :value="lang"
+          >
+            {{ lang }}
+          </option>
+        </select>
+      </div>
       <CompErrorMsg
         v-if="errorMsg"
         :message="errorMsg" />
@@ -53,7 +87,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, type Ref } from 'vue'
+import { onMounted, ref, type Ref, watch } from 'vue'
 import {
   useRouter
 } from 'vue-router'
@@ -77,6 +111,7 @@ import { useStoreLoading } from '@/stores/storeLoading.ts'
 import CompErrorMsg from '@/components/ui/CompErrorMsg.vue'
 
 const ENDPOINT = '/register'
+const ENDPOINT_GET_JSON_DATA = '/countries-language-json'
 const DEFAULT_ROUTE = '/verification-message'
 
 const router = useRouter()
@@ -90,6 +125,23 @@ const formData: Ref<RegisterRequest> = ref<RegisterRequest>({
   password: '',
   password_confirmation: ''
 })
+
+interface CountryLang {
+  country: string,
+  languages: Array<string>
+}
+
+const jsonCountryData: Ref<CountryLang[]> = ref<CountryLang[]>([
+  {
+    country: '',
+    languages: []
+  }
+])
+
+const selectedCountry = ref('')
+const selectedLanguage = ref('')
+
+const availableLanguages = ref([''])
 
 const registerSchema = yup.object({
   username: yup
@@ -109,6 +161,30 @@ const registerSchema = yup.object({
     .oneOf([yup.ref('password')], 'Password doesn\'t match')
 })
 
+onMounted(async () => {
+  isLoading.setLoadingTrue()
+  await CSRF.get('/sanctum/csrf-cookie').catch((error) => {
+    console.log(error)
+  })
+
+  await api.get(`${ENDPOINT_GET_JSON_DATA}`
+  ).then((response) => {
+    jsonCountryData.value = response.data
+  }).catch((error) => {
+    console.log(error)
+  }).finally(() => {
+    isLoading.setLoadingFalse()
+  })
+})
+
+const onCountryChange = () => {
+  selectedLanguage.value = ''
+  const selected = jsonCountryData.value.find(
+    (c) => c.country === selectedCountry.value
+  )
+  availableLanguages.value = selected ? selected.languages : []
+}
+
 const handleRequest = async () => {
   isLoading.setLoadingTrue()
   await CSRF.get('/sanctum/csrf-cookie').catch((error) => {
@@ -119,7 +195,9 @@ const handleRequest = async () => {
     username: formData.value.username,
     email: formData.value.email,
     password: formData.value.password,
-    password_confirmation: formData.value.password_confirmation
+    password_confirmation: formData.value.password_confirmation,
+    country: selectedCountry.value,
+    language: selectedLanguage.value
   }).then(() => {
     router.push(DEFAULT_ROUTE)
   }).catch((error) => {

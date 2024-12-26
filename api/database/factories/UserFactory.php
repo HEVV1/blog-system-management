@@ -25,6 +25,8 @@ class UserFactory extends Factory
     {
         return [
             'username' => fake()->name(),
+            'country' => fake()->country(),
+            'language' => fake()->languageCode(),
             'email' => fake()->unique()->safeEmail(),
             'email_verified_at' => now(),
             'password' => static::$password ??= Hash::make('password'),

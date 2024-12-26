@@ -24,6 +24,8 @@ class BlogResource extends JsonResource
                 'id' => $this->user->id,
                 'username' => $this->user->username,
                 'email' => $this->user->email,
+                'country' => $this->user->country,
+                'language' => $this->user->language,
             ]
         ];
     }

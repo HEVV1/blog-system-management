@@ -25,6 +25,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
         ->only(['store', 'update', 'destroy']);
 });
 
+Route::get('/countries-language-json', [AuthController::class, 'countriesLanguageJson'])
+    ->name('countries-language-json');
+
 // Password reset
 Route::post('/password/email', [PasswordResetController::class, 'sendResetLinkEmail'])
     ->name('password.email');
